@@ -16,7 +16,7 @@
 - What are the Layers and Layouts dropdowns
 - What are Gizmos
 
-## 2. Unity - Unity Concepts
+## 2. Unity - Concepts
 
 - What is a GameObject
 - What is a Component
@@ -28,3 +28,13 @@
 - How to add Tags and Layers
 - Why is it important to name GameObjects and assets clearly and organize your project hierarchy
 - What are gameplay and game mechanics and how do they relate to developing any kind of interactive experience
+
+## 3. Unity - Publishing
+
+- How to publish a build
+- How to reorder scenes in a build
+- How to build a standalone application for Windows, Mac, and Linux
+- How to edit a project’s Quality Settings
+- How to add an icon to your build
+- What is the profiler and how to use it to check your project’s performance
+- What to consider when developing for different platforms
