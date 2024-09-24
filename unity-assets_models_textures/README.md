@@ -9,3 +9,7 @@
 ### 1. Primitive prototype
 
 - Layout of floating platforms of different sizes and positions using only Unity Cube GameObjects.
+
+### 2. Pole position
+
+- Placeholder cylinder GameObject called WinFlag to designate the end of the path
