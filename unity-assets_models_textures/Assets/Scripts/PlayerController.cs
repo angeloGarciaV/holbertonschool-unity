@@ -1,45 +1,114 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 10.0f;
-    public Vector3 jump;
-    public float jumpForce = 2.0f;
-    public bool isGrounded;
+    [Header("Movement")]
+    public float moveSpeed;
 
-    private Rigidbody rb;
-    void Start()
+    public float groundDrag;
+
+    public float jumpForce;
+    public float jumpCoolDown;
+    public float airMultiplier;
+    bool canJump = true;
+
+    [Header("Keybinds")]
+    public KeyCode jumpKey = KeyCode.Space;
+
+    [Header("Groud Check")]
+    public float playerHeight;
+    public LayerMask Ground;
+    public bool isGrounded;
+    public Transform orientation;
+
+    float horizontalInput;
+    float verticalInput;
+    
+    Vector3 moveDirection;
+    
+    Rigidbody rb;
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        jump = new Vector3(0.0f, 2.0f, 0.0f);
+        rb.freezeRotation = true;
     }
-    void OnCollisionStay()
+    private void Update()
     {
-        isGrounded = true;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            this.transform.position += Vector3.left * speed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            this.transform.position += Vector3.right * speed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-            this.transform.position += new Vector3(0, 0, 1) * speed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-            this.transform.position += new Vector3(0, 0, -1) * speed * Time.deltaTime;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, Ground);
         
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
-        {
-            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
+        MyInput();
+        SpeedControl();
 
-        if (transform.position.y < -10)
+        if(isGrounded)
+            rb.drag = groundDrag;
+        else
+            rb.drag = 0;
+
+        if(rb.position.y < -50f)
         {
-            transform.position = new Vector3(0, 1, 0);
+            rb.position = new Vector3(0, 50, 0);
+            rb.velocity = Vector3.zero;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        MovePlayer();
+    }
+
+    private void MyInput()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
+
+        if(Input.GetKey(jumpKey) && canJump && isGrounded)
+        {
+            canJump = false;
+
+            Jump();
+
+            Invoke(nameof(ResetJump), jumpCoolDown);
+        }
+    }
+
+    private void MovePlayer()
+    {
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        if(isGrounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+        else if(!isGrounded)
+        {
+           rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
+    }
+
+    private void SpeedControl()
+    {
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        if(flatVel.magnitude > moveSpeed)
+        {
+            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        }
+    }
+
+    private void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+    private void ResetJump()
+    {
+        canJump = true;
     }
 }
 
