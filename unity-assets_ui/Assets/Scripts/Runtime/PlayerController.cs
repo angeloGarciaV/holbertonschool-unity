@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetKey(jumpKey) && canJump || Input.GetKey(jumpKey) && canJump && isGrounded)
+        if(Input.GetKey(jumpKey) && canJump && isGrounded)
         {
             canJump = false;
 
