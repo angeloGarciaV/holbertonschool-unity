@@ -63,6 +63,14 @@ public class PlayerController : MonoBehaviour
         }else{
             animator.SetBool("isRunning",false);
         }
+
+        if(rb.position.y == 50 && !isGrounded || rb.position.y < -10 && !isGrounded)
+        {
+            animator.SetBool("isFalling", true);
+        }
+        else if(isGrounded){
+            animator.SetBool("isFalling", false);
+        }
     }
 
     private void FixedUpdate()
