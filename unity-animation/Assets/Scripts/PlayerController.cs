@@ -31,10 +31,13 @@ public class PlayerController : MonoBehaviour
     
     Rigidbody rb;
 
+    private Animator animator;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        animator = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -52,6 +55,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.position = new Vector3(0, 50, 0);
             rb.velocity = Vector3.zero;
+        }
+
+        if(rb.velocity != Vector3.zero)
+        {
+            animator.SetBool("isRunning", true);
+        }else{
+            animator.SetBool("isRunning",false);
         }
     }
 
