@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 1251989245}
   player: {fileID: 1380525406}
-  playerObj: {fileID: 0}
+  playerObj: {fileID: 927221447}
   isInverted: 0
   rb: {fileID: 1380525407}
   rotationSpeed: 7
@@ -10808,6 +10808,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b12b05bb73f8eb44ebfe83f4cf0bf30c, type: 3}
   m_PrefabInstance: {fileID: 1444897445}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &927221447 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4935663688223609771, guid: 337dd82db6d94eb40b15478024c2f534, type: 3}
+  m_PrefabInstance: {fileID: 590408910763028460}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &935410814
 GameObject:
