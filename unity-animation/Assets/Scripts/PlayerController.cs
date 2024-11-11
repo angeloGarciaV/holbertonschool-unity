@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
         if(isGrounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            animator.SetBool("isJumping", false);
         }
         else if(!isGrounded)
         {
@@ -113,8 +114,8 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        animator.SetBool("isJumping", true);
     }
     private void ResetJump()
     {
