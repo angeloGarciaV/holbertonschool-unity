@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector3.zero;
         }
 
-        if(rb.velocity != Vector3.zero)
+        if(rb.velocity.x != 0 || rb.velocity.z != 0)
         {
             animator.SetBool("isRunning", true);
         }else{
@@ -106,8 +106,16 @@ public class PlayerController : MonoBehaviour
         {
            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
-    }
 
+        if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up") ||
+            this.animator.GetCurrentAnimatorStateInfo(0).IsName("Falling Flat Impact"))
+            {
+                moveSpeed = 0;
+            }
+        else {
+            moveSpeed = 10;
+        }
+    }
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
